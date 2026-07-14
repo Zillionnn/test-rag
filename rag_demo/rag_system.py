@@ -8,6 +8,13 @@ import glob
 from typing import List, Optional
 from dotenv import load_dotenv
 
+# 【关键】在加载任何 ML 库之前，设置 HuggingFace 缓存目录到项目本地
+# 这样模型会下载到当前文件夹的 .cache 目录，方便打包分发
+project_root = os.path.dirname(os.path.abspath(__file__))
+local_cache = os.path.join(project_root, ".cache", "huggingface")
+os.environ["HF_HOME"] = local_cache
+os.environ["TRANSFORMERS_CACHE"] = local_cache
+
 # LangChain 核心组件
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -26,7 +33,7 @@ class RAGSystem:
         self,
         docs_folder: str = "../documents",
         persist_directory: str = "./chroma_db",
-        embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        embedding_model: str = "BAAI/bge-m3",
         chunk_size: int = 500,
         chunk_overlap: int = 50
     ):
@@ -219,7 +226,8 @@ def main():
     try:
         rag = RAGSystem(
             docs_folder="../documents",
-            persist_directory="./chroma_db"
+            persist_directory="./chroma_db",
+            embedding_model="BAAI/bge-m3"  # 使用精度更高的中文模型
         )
     except ValueError as e:
         print(f"错误：{e}")
