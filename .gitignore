@@ -1,18 +1,8 @@
 ```
-# Python
-__pycache__/
+# Compiled Python files
 *.pyc
-*.pyo
-*.pyd
+__pycache__/
 
-# Environment
+# Environment variables
 .env
-
-# Dependencies
-venv/
-.venv/
-
-# Build artifacts
-build/
-dist/
 ```
