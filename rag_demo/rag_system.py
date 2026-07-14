@@ -27,8 +27,8 @@ class RAGSystem:
         docs_folder: str = "../documents",
         persist_directory: str = "./chroma_db",
         embedding_model: str = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-        chunk_size: int = 500,
-        chunk_overlap: int = 50
+        chunk_size: int = 400,
+        chunk_overlap: int = 40
     ):
         """
         初始化 RAG 系统
@@ -193,13 +193,14 @@ class RAGSystem:
         print("\n正在调用 DeepSeek API...")
         try:
             response = self.client.chat.completions.create(
-                model="deepseek-chat",
+                model="deepseek-v4-flash",
                 messages=[
                     {"role": "system", "content": "你是一个有帮助的 AI 助手。"},
                     {"role": "user", "content": prompt}
                 ],
                 temperature=0.7,
-                max_tokens=1024
+                reasoning_effort="high",
+                extra_body={"thinking": {"type": "enabled"}},
             )
             
             answer = response.choices[0].message.content

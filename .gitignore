@@ -16,3 +16,5 @@ venv/
 build/
 dist/
 ```
+
+rag_demo/chroma_db/
